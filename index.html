@@ -30,7 +30,8 @@
         }
 
         body {
-            height: 100vh;
+            height: 100vh; /* Для старых браузеров */
+            height: 100dvh; /* Для современных мобильных браузеров (учитывает клавиатуру) */
             display: flex;
             flex-direction: column;
             background: radial-gradient(circle at 20% 30%, #0b0e1a, var(--bg-dark));
@@ -944,6 +945,19 @@
         attachBtn.addEventListener('click', () => {
             showToast('Загрузка файлов недоступна в веб-версии. Пожалуйста, воспользуйтесь нашим ТГ-ботом: <a href="https://t.me/free_unlim_chatgpt_bot" target="_blank">@free_unlim_chatgpt_bot</a>');
         });
+
+        // --- Фикс для мобильных устройств (клавиатура) ---
+        window.addEventListener('resize', () => {
+            // Если открыта клавиатура, прокручиваем вниз
+            scrollToBottom();
+        });
+        
+        // Для iOS Safari (когда клавиатура открывается, вьюпорт меняется визуально)
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                scrollToBottom();
+            });
+        }
 
         sessionStorage.removeItem(STORAGE_KEY);
         chatHistory = [];
